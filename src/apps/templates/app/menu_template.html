@@ -1,0 +1,42 @@
+<style>
+    .tree {
+        list-style: none;
+        padding-left: 0;
+        line-height: 1.5;
+    }
+    
+    .tree a {
+        text-decoration: none;
+        color: #333;
+        transition: color 0.2s;
+    }
+    
+    .tree a:hover {
+        color: #0066cc;
+    }
+    
+    .tree a.active {
+        font-weight: bold;
+        color: #0066cc;
+    }
+    
+    .tree ul {
+        margin-left: 1em;
+        padding-left: 1em;
+        border-left: 1px solid #ddd;
+    }
+</style>
+<ul class="tree">
+    {% for node in menu_data %}
+        <details {% if node.is_active or node.has_active_children %}open{% endif %}>
+        <summary>
+            <a href="{{ node.item.url }}" {% if node.is_active %}class="active"{% endif %}>
+                {{ node.item.name }}
+            </a>
+        </summary>
+        {% if node.children %}
+            {% include 'app/menu_template.html' with menu_data=node.children %}
+        {% endif %}
+        </details>
+    {% endfor %}
+</ul>

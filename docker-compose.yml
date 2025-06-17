@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: uptrader_case
+    ports:
+      - 8000:8000
+    depends_on:
+      - uptraderdb
+    command: bash -c "python src/manage.py migrate && python src/manage.py runserver 0.0.0.0:8000"
+  uptraderdb:
+    image: postgres
+    container_name: uptraderdb
+    environment:
+      - POSTGRES_DB=uptrader_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ABD24B7D
+    volumes:
+      - pgdbdata:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+      
+volumes:
+  pgdbdata: null
